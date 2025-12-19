@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Design Cake - Malaysia Homemade Cakes</title>
+    <meta name="description" content="Special Design Cake - Malaysian Homemade Custom Cakes, Money Pulling Cake & Jelly Cake">
+    <meta name="keywords" content="Malaysia cake, Money Pulling Cake, Jelly Cake, custom cake, homemade cake">
+    <meta name="author" content="Special Design Cake">
+    <meta name="geo.region" content="MY-10">
+    <meta name="geo.placename" content="Selangor">
+    
+    <style>
+        /* 全局样式 */
+        :root {
+            --primary-yellow: #ffcc00;
+            --whatsapp-green: #25D366;
+            --white: #ffffff;
+            --black: #333333;
+            --gray: #666666;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Verdana', sans-serif;
+            background-color: cornsilk;
+            color: var(--black);
+            line-height: 1.6;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://ibb.co/BVgwFd8N');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.35;
+            z-index: -1;
+        }
+        
+        /* 语言切换按钮 */
+        .language-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--primary-yellow);
+            padding: 8px 16px;
+            margin: 0 5px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Verdana', sans-serif;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .lang-btn.active {
+            background: var(--primary-yellow);
+            color: var(--black);
+        }
+        
+        .lang-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        /* 双语言内容控制 */
+        [lang="zh"], [lang="en"] {
+            display: none;
+        }
+        
+        body:lang(zh) [lang="zh"],
+        body:lang(en) [lang="en"] {
+            display: block;
+        }
+        
+        /* 招牌样式 */
+        .header-banner {
+            background-color: var(--primary-yellow);
+            padding: 30px 20px;
+            margin: 60px auto 30px;
+            border-radius: 15px;
+            max-width: 1200px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .shop-name {
+            font-family: 'Dancing Script', cursive;
+            color: var(--black);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .shop-name {
+            font-size: 40px;
+        }
+        
+        @media (min-width: 768px) {
+            .shop-name {
+                font-size: 60px;
+            }
+        }
+        
+        .tagline {
+            font-size: 35px;
+            margin: 15px auto;
+            max-width: 800px;
+            line-height: 1.4;
+        }
+        
+        .tagline-chinese {
+            font-family: 'Ma Shan Zheng', '仿宋', cursive;
+            display: block;
+        }
+        
+        /* 容器样式 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+        
+        /* 公司信息样式 */
+        .company-info {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px auto;
+            text-align: center;
+            font-size: 18px;
+            line-height: 1.6;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        
+        .company-info h2 {
+            color: var(--primary-yellow);
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .company-info p {
+            margin: 10px 0;
+            padding: 5px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        .company-info p:last-child {
+            border-bottom: none;
+        }
+        
+        /* 蛋糕类别样式 */
+        .cake-category {
+            background-color: rgba(255, 255, 255, 0.92);
+            padding: 35px;
+            border-radius: 15px;
+            margin: 40px auto;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .cake-title {
+            font-family: 'Verdana', sans-serif;
+            font-size: 30px;
+            color: var(--black);
+            margin-bottom: 30px;
+            font-weight: bold;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary-yellow);
+            display: inline-block;
+        }
+        
+        /* 图片网格样式 */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 35px 0;
+            justify-items: center;
+        }
+        
+        .cake-image-container {
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .cake-image {
+            max-width: 100%;
+            max-height: 500px;
+            width: auto;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            display: block;
+            margin: 0 auto 10px;
+            background: linear-gradient(135deg, #f5f5f5, #ffffff);
+            padding: 15px;
+            transition: transform 0.3s;
+        }
+        
+        .cake-image:hover {
+            transform: scale(1.03);
+        }
+        
+        .image-label {
+            text-align: center;
+            font-style: italic;
+            color: var(--gray);
+            margin-top: 10px;
+            font-size: 15px;
+        }
+        
+        /* 蛋糕资料样式 */
+        .cake-specs {
+            font-family: 'Verdana', sans-serif;
+            font-size: 20px;
+            text-align: center;
+            margin: 25px 0;
+            padding: 15px;
+            background: rgba(255, 204, 0, 0.1);
+            border-radius: 10px;
+            line-height: 1.8;
+        }
+        
+        .price-note {
+            text-align: center;
+            margin: 20px 0 30px;
+            color: var(--gray);
+            font-size: 18px;
+            line-height: 1.5;
+            padding: 0 20px;
+        }
+        
+        .price-note-chinese {
+            font-family: 'Ma Shan Zheng', '仿宋', cursive;
+        }
+        
+        /* WhatsApp链接样式 */
+        .whatsapp-link {
+            display: block;
+            background-color: var(--whatsapp-green);
+            color: var(--white);
+            text-align: center;
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 20px;
+            margin: 30px auto;
+            width: fit-content;
+            transition: all 0.3s;
+            box-shadow: 0 6px 12px rgba(37, 211, 102, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .whatsapp-link:hover {
+            background-color: #128C7E;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(37, 211, 102, 0.4);
+        }
+        
+        .link-instruction {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 15px;
+            color: var(--black);
+            padding: 0 20px;
+        }
+        
+        /* 社交媒体页脚 */
+        .social-footer {
+            background-color: var(--primary-yellow);
+            padding: 25px;
+            text-align: center;
+            border-radius: 15px;
+            margin-top: 50px;
+            font-size: 16px;
+            line-height: 1.8;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .social-footer p {
+            margin: 10px 0;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .language-switcher {
+                position: relative;
+                top: 10px;
+                right: 10px;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            
+            .header-banner {
+                margin-top: 30px;
+                padding: 20px 15px;
+            }
+            
+            .shop-name {
+                font-size: 36px;
+            }
+            
+            .tagline {
+                font-size: 26px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .cake-category {
+                padding: 25px 15px;
+            }
+            
+            .cake-title {
+                font-size: 26px;
+            }
+            
+            .cake-specs {
+                font-size: 18px;
+            }
+            
+            .price-note {
+                font-size: 16px;
+            }
+            
+            .whatsapp-link {
+                padding: 15px 30px;
+                font-size: 18px;
+            }
+            
+            .image-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .shop-name {
+                font-size: 32px;
+            }
+            
+            .tagline {
+                font-size: 22px;
+            }
+            
+            .company-info {
+                font-size: 16px;
+                padding: 20px 15px;
+            }
+            
+            .cake-title {
+                font-size: 24px;
+            }
+            
+            .whatsapp-link {
+                padding: 12px 25px;
+                font-size: 16px;
+                width: 90%;
+            }
+        }
+        
+        /* 打印样式 */
+        @media print {
+            .language-switcher,
+            .whatsapp-link {
+                display: none;
+            }
+        }
+    </style>
+    
+    <!-- 字体引入 -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+</head>
+<body lang="zh">
+    <!-- 语言切换按钮 -->
+    <div class="language-switcher">
+        <button class="lang-btn active" onclick="switchLanguage('zh')">中文</button>
+        <button class="lang-btn" onclick="switchLanguage('en')">English</button>
+    </div>
+
+    <div class="container">
+        <!-- 招牌部分 - 中英文 -->
+        <header class="header-banner">
+            <h1 class="shop-name">Special Design Cake</h1>
+            
+            <div class="tagline">
+                <span lang="zh" class="tagline-chinese">Homemade 私人定制 拉钱蛋糕 & Jelly Cake</span>
+                <span lang="en" style="display: none;">Homemade Custom Money Pulling Cake & Jelly Cake</span>
+            </div>
+        </header>
+
+        <!-- 公司信息 - 中英文 -->
+        <section class="company-info">
+            <h2 lang="zh">公司营业信息</h2>
+            <h2 lang="en" style="display: none;">BUSINESS INFORMATION</h2>
+            
+            <div lang="zh">
+                <p><strong>公司名称:</strong> JPLUS BRL TRADE ENTERPRISE</p>
+                <p><strong>注册编号:</strong> 202403243271 (PG0560944-P)</p>
+                <p><strong>营业地址:</strong> B18-01 BLOCK B, TWIN RESIDENCES, JALAN PIPT, BUKIT TANDANG, 47170 PUCHONG, SELANGOR</p>
+                <p><strong>企业类型:</strong> 独资企业</p>
+                <p><strong>营业开始日期:</strong> 20-08-2024</p>
+                <p><strong>注册日期:</strong> 12-09-2024</p>
+                <p><strong>注册有效期:</strong> 11-09-2027</p>
+                <p><strong>状态:</strong> 活跃</p>
+                
+                <h3>营业类型</h3>
+                <p>食品供应销售、保健品销售、房屋店铺租赁、矿产贸易（沙、煤、石油和天然气）、家居产品销售</p>
+            </div>
+            
+            <div lang="en" style="display: none;">
+                <p><strong>Business Name:</strong> JPLUS BRL TRADE ENTERPRISE</p>
+                <p><strong>Registration No:</strong> 202403243271 (PG0560944-P)</p>
+                <p><strong>Business Address:</strong> B18-01 BLOCK B, TWIN RESIDENCES, JALAN PIPT, BUKIT TANDANG, 47170 PUCHONG, SELANGOR</p>
+                <p><strong>Business Type:</strong> Sole Proprietorship</p>
+                <p><strong>Business Start Date:</strong> 20-08-2024</p>
+                <p><strong>Registration Date:</strong> 12-09-2024</p>
+                <p><strong>Registration Expiry:</strong> 11-09-2027</p>
+                <p><strong>Status:</strong> Active</p>
+                
+                <h3>Business Types</h3>
+                <p>Supply Sales of Food Products, Sales of Supplements, House and Shop Leasing and Trading of Minerals (Sand, Coal, Oil and Gas), Sales of Household Products</p>
+            </div>
+        </section>
+
+        <!-- 拉钱蛋糕部分 - 中英文 -->
+        <section class="cake-category">
+            <h2 class="cake-title">
+                <span lang="zh">拉钱蛋糕</span>
+                <span lang="en" style="display: none;">Money Pulling Cake</span>
+            </h2>
+            
+            <!-- 图片网格 - 3张图片 -->
+            <div class="image-grid">
+                <div class="cake-image-container">
+                    <img src="https://ibb.co/j9bHRyFr" alt="鲜花蛋糕礼盒，有钱花蛋糕，homemade cake" class="cake-image">
+                    <p class="image-label">Example 1</p>
+                </div>
+                
+                <div class="cake-image-container">
+                    <img src"=https://ibb.co/SwMzDG5r" alt="创意，奇幻，童话造型蛋糕,homemade cake" class="cake-image">
+                    <p class="image-label">Example 2</p>
+                </div>
+                
+                <div class="cake-image-container">
+                    <img src="https://ibb.co/5CXcDX3" alt="发财，新年，喜庆，长辈造型蛋糕,homemade cake" class="cake-image">
+                    <p class="image-label">Example 3</p>
+                </div>
+            </div>
+            
+            <div class="cake-specs">
+                <span lang="zh">蛋糕尺寸: 8英寸(20厘米)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价格: RM228 - RM288</span>
+                <span lang="en" style="display: none;">Cake size: 8 inches(20cm)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Price: RM228 - RM288</span>
+            </div>
+            
+            <p class="price-note">
+                <span lang="zh" class="price-note-chinese">(上述资料为参考，蛋糕尺寸可定制，价格会随定制要求变动)</span>
+                <span lang="en" style="display: none;">(Above information is for reference only. Cake size can be customized, price may vary based on customization)</span>
+            </p>
+            
+            <a href="https://wa.me/60165689026?text=Hi%20Special%20Design%20Cake!%20I'm%20interested%20in%20your%20拉钱蛋糕" 
+               class="whatsapp-link" 
+               target="_blank">
+                <span lang="zh">点击此处通过WhatsApp订购拉钱蛋糕</span>
+                <span lang="en" style="display: none;">Click here to order Money Pulling Cake via WhatsApp</span>
+            </a>
+            
+            <p class="link-instruction">
+                <span lang="zh">欲购买蛋糕请点击此网址向卖家下单 (点击后会跳转到WhatsApp)</span>
+                <span lang="en" style="display: none;">Click the link above to order cake (will redirect to WhatsApp)</span>
+            </p>
+        </section>
+
+        <!-- JELLY CAKE部分 - 中英文 -->
+        <section class="cake-category">
+            <h2 class="cake-title">JELLY CAKE</h2>
+            
+            <!-- 图片网格 - 1张图片 -->
+            <div class="image-grid">
+                <div class="cake-image-container">
+                    <img src="https://ibb.co/zWSQ4k3Z" alt="Jelly Cake，多层彩虹色果冻蛋糕装饰有水果" class="cake-image">
+                    <p class="image-label">Example</p>
+                </div>
+            </div>
+            
+            <div class="cake-specs">
+                <span lang="zh">蛋糕尺寸: 可定制&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;价格: 根据定制报价</span>
+                <span lang="en" style="display: none;">Cake size: Custom&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Price: Custom Quote</span>
+            </div>
+            
+            <p class="price-note">
+                <span lang="zh" class="price-note-chinese">(Jelly Cake尺寸和价格根据定制要求确定)</span>
+                <span lang="en" style="display: none;">(Jelly Cake size and price determined based on customization requirements)</span>
+            </p>
+            
+            <a href="https://wa.me/60106662025?text=Hi%20Special%20Design%20Cake!%20I'm%20interested%20in%20your%20Jelly%20Cake" 
+               class="whatsapp-link" 
+               target="_blank">
+                <span lang="zh">点击此处通过WhatsApp订购Jelly Cake</span>
+                <span lang="en" style="display: none;">Click here to order Jelly Cake via WhatsApp</span>
+            </a>
+            
+            <p class="link-instruction">
+                <span lang="zh">欲购买蛋糕请点击此网址向卖家下单 (点击后会跳转到WhatsApp)</span>
+                <span lang="en" style="display: none;">Click the link above to order cake (will redirect to WhatsApp)</span>
+            </p>
+        </section>
+
+        <!-- 社交媒体页脚 - 中英文 -->
+        <footer class="social-footer">
+            <p>
+                <span lang="zh">Facebook账号: xxxxxx, Instagram账号: xxxxxx</span>
+                <span lang="en" style="display: none;">Facebook account: xxxxxx, Instagram account: xxxxxx</span>
+            </p>
+            <p>
+                <span lang="zh">联系邮箱: kverchong@hotmail.com | 注册公司: JPLUS BRL TRADE ENTERPRISE</span>
+                <span lang="en" style="display: none;">Contact Email: kverchong@hotmail.com | Registered Business: JPLUS BRL TRADE ENTERPRISE</span>
+            </p>
+            <p>
+                <span lang="zh">© 2024 Special Design Cake 版权所有 | 马来西亚自制蛋糕</span>
+                <span lang="en" style="display: none;">© 2024 Special Design Cake All rights reserved | Malaysia Homemade Cakes</span>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // 语言切换功能
+        function switchLanguage(lang) {
+            // 更新html标签的lang属性
+            document.documentElement.lang = lang;
+            
+            // 更新按钮激活状态
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // 更新WhatsApp链接文本
+            const whatsappLinks = document.querySelectorAll('.whatsapp-link');
+            if (lang === 'en') {
+                whatsappLinks[0].href = "https://wa.me/60165689026?text=Hi%20Special%20Design%20Cake!%20I'm%20interested%20in%20your%20Money%20Pulling%20Cake";
+                whatsappLinks[1].href = "https://wa.me/60106662025?text=Hi%20Special%20Design%20Cake!%20I'm%20interested%20in%20your%20Jelly%20Cake";
+            } else {
+                whatsappLinks[0].href = "https://wa.me/60165689026?text=Hi%20Special%20Design%20Cake!%20I'm%20interested%20in%20your%20拉钱蛋糕";
+                whatsappLinks[1].href = "https://wa.me/60106662025?text=Hi%20Special%20Design%20Cake!%20I'm%20interested%20in%20your%20Jelly%20Cake";
+            }
+            
+            // 保存语言偏好
+            localStorage.setItem('preferred-language', lang);
+        }
+        
+        // 页面加载时检查语言偏好
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedLang = localStorage.getItem('preferred-language') || 'zh';
+            document.documentElement.lang = savedLang;
+            
+            // 设置正确的按钮激活状态
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent === (savedLang === 'zh' ? '中文' : 'English')) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // 图片懒加载
+            const images = document.querySelectorAll('.cake-image');
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                        }
+                        imageObserver.unobserve(img);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            images.forEach(img => imageObserver.observe(img));
+        });
+    </script>
+</body>
+</html>
