@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Special Design Cake - Homemade Custom Cakes Malaysia</title>
-    <meta name="description" content="马来西亚私家定制蛋糕，拉钱蛋糕，Jelly Cake，私人定制蛋糕服务。JPLUS BRL TRADE ENTERPRISE注册公司。">
-    <meta name="keywords" content="马来西亚蛋糕,拉钱蛋糕,Jelly Cake,定制蛋糕,homemade cake,Special Design Cake">
-    <meta name="author" content="Special Design Cake">
+    <title>Special Design Cake - 马来西亚私家定制蛋糕 | Homemade Custom Cakes Malaysia</title>
+    <meta name="description" content="Special Design Cake - 马来西亚私家定制蛋糕，拉钱蛋糕，Jelly Cake，私人定制蛋糕服务。Homemade custom cakes, money cakes, jelly cakes in Malaysia.">
+    <meta name="keywords" content="马来西亚蛋糕,拉钱蛋糕,Jelly Cake,定制蛋糕,homemade cake,Special Design Cake,Malaysia cake,custom cake,money cake">
     
     <style>
         * {
@@ -16,7 +15,7 @@
         }
         
         body {
-            font-family: Verdana, sans-serif;
+            font-family: Verdana, Arial, sans-serif;
             background-color: cornsilk;
             color: #333;
             line-height: 1.6;
@@ -26,6 +25,28 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
+        }
+        
+        /* 语言切换 */
+        .language-switcher {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+        
+        .lang-btn {
+            background: #ffcc00;
+            border: none;
+            padding: 8px 15px;
+            margin: 0 5px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .lang-btn.active {
+            background: #333;
+            color: white;
         }
         
         /* 招牌样式 */
@@ -42,7 +63,7 @@
             font-family: 'Dancing Script', cursive;
             font-size: 40px;
             color: black;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             font-weight: bold;
         }
         
@@ -55,6 +76,29 @@
         .tagline {
             font-size: 35px;
             font-family: 'Ma Shan Zheng', cursive;
+            margin-bottom: 10px;
+        }
+        
+        .tagline-en {
+            font-size: 24px;
+            color: #444;
+            font-family: Verdana, sans-serif;
+        }
+        
+        /* 双语内容样式 */
+        .bilingual-section {
+            margin-bottom: 25px;
+        }
+        
+        .zh-text {
+            font-family: 'Ma Shan Zheng', 'Microsoft YaHei', sans-serif;
+            margin-bottom: 5px;
+        }
+        
+        .en-text {
+            font-family: Verdana, Arial, sans-serif;
+            color: #444;
+            font-size: 0.95em;
         }
         
         /* 公司信息 */
@@ -63,13 +107,12 @@
             padding: 25px;
             border-radius: 10px;
             margin-bottom: 30px;
-            text-align: center;
-            font-size: 18px;
         }
         
         .company-info h2 {
             color: #333;
             margin-bottom: 15px;
+            text-align: center;
         }
         
         /* 蛋糕类别 */
@@ -82,11 +125,20 @@
         }
         
         .cake-title {
-            font-family: Verdana, sans-serif;
+            font-family: 'Ma Shan Zheng', cursive;
             font-size: 30px;
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 10px;
             color: #333;
+        }
+        
+        .cake-title-en {
+            font-family: Verdana, sans-serif;
+            font-size: 26px;
+            text-align: center;
+            margin-bottom: 25px;
+            color: #555;
+            font-weight: normal;
         }
         
         /* 图片网格 */
@@ -107,6 +159,7 @@
             margin: 0 auto;
             background-color: #f5f5f5;
             padding: 10px;
+            border: 1px solid #ddd;
         }
         
         .image-label {
@@ -114,21 +167,42 @@
             font-style: italic;
             color: #666;
             margin-top: 5px;
+            font-size: 14px;
         }
         
         /* 蛋糕资料 */
         .cake-specs {
-            font-family: Verdana, sans-serif;
-            font-size: 18px;
             text-align: center;
             margin: 20px 0;
+        }
+        
+        .specs-zh {
+            font-family: 'Ma Shan Zheng', sans-serif;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .specs-en {
+            font-family: Verdana, sans-serif;
+            font-size: 18px;
+            color: #444;
         }
         
         .price-note {
             text-align: center;
             margin: 15px 0 25px;
             color: #666;
+        }
+        
+        .note-zh {
+            font-family: 'Ma Shan Zheng', sans-serif;
             font-size: 18px;
+        }
+        
+        .note-en {
+            font-family: Verdana, sans-serif;
+            font-size: 16px;
+            color: #555;
         }
         
         /* WhatsApp链接 */
@@ -149,11 +223,12 @@
         
         .whatsapp-link:hover {
             background-color: #128C7E;
+            transform: translateY(-2px);
         }
         
         .link-instruction {
             text-align: center;
-            font-size: 18px;
+            font-size: 16px;
             margin-top: 10px;
         }
         
@@ -166,6 +241,16 @@
             margin-top: 40px;
             font-size: 15px;
         }
+        
+        .footer-zh {
+            font-family: 'Ma Shan Zheng', sans-serif;
+            margin-bottom: 5px;
+        }
+        
+        .footer-en {
+            font-family: Verdana, sans-serif;
+            color: #444;
+        }
     </style>
     
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
@@ -173,98 +258,169 @@
 </head>
 <body>
     <div class="container">
+        <!-- 语言切换 -->
+        <div class="language-switcher">
+            <button class="lang-btn active" onclick="switchLanguage('zh')">中文</button>
+            <button class="lang-btn" onclick="switchLanguage('en')">English</button>
+        </div>
+
         <!-- 招牌 -->
         <header class="header-banner">
             <h1 class="shop-name">Special Design Cake</h1>
-            <div class="tagline">Homemade 私人定制 拉钱蛋糕 & Jelly Cake</div>
+            <div class="tagline">私家定制蛋糕坊</div>
+            <div class="tagline-en">Homemade Custom Cake Studio</div>
         </header>
 
         <!-- 公司信息 -->
         <section class="company-info">
-            <h2>MAKLUMAT PERNIAGAAN</h2>
-            <p><strong>NAMA PERNIAGAAN:</strong> JPLUS BRL TRADE ENTERPRISE</p>
-            <p><strong>NO PENDAFTARAN:</strong> 202403243271 (PG0560944-P)</p>
-            <p><strong>ALAMAT UTAMA PERNIAGAAN:</strong> B18-01 BLOCK B, TWIN RESIDENCES, JALAN PIPT, BUKIT TANDANG, 47170 PUCHONG, SELANGOR</p>
-            <p><strong>BENTUK PERNIAGAAN:</strong> PEMILIKAN TUNGGAL</p>
-            <p><strong>TARKH MULA BERNIAGA:</strong> 20-08-2024</p>
-            <p><strong>TARKH PENDAFTARAN:</strong> 12-09-2024</p>
-            <p><strong>TARKH LUPUT PENDAFTARAN:</strong> 11-09-2027</p>
-            <p><strong>STATUS:</strong> AKTIF</p>
+            <h2>公司信息 | Company Information</h2>
             
-            <h3>JENIS PERNIAGAAN</h3>
-            <p>SUPPLY SALES OF FOOD PRODUCTS, SALES OF SUPPLEMENTS, HOUSE AND SHOP LEASING AND TRADING OF MINERALS (SAND, COAL, OIL AND GAS), SALES OF HOUSEHOLD PRODUCT</p>
+            <div class="bilingual-section">
+                <div class="zh-text"><strong>公司名称:</strong> JPLUS BRL TRADE ENTERPRISE</div>
+                <div class="en-text"><strong>Company Name:</strong> JPLUS BRL TRADE ENTERPRISE</div>
+            </div>
+            
+            <div class="bilingual-section">
+                <div class="zh-text"><strong>注册号码:</strong> 202403243271 (PG0560944-P)</div>
+                <div class="en-text"><strong>Registration No:</strong> 202403243271 (PG0560944-P)</div>
+            </div>
+            
+            <div class="bilingual-section">
+                <div class="zh-text"><strong>公司地址:</strong> B18-01 BLOCK B, TWIN RESIDENCES, JALAN PIPT, BUKIT TANDANG, 47170 PUCHONG, SELANGOR</div>
+                <div class="en-text"><strong>Business Address:</strong> B18-01 BLOCK B, TWIN RESIDENCES, JALAN PIPT, BUKIT TANDANG, 47170 PUCHONG, SELANGOR</div>
+            </div>
+            
+            <div class="bilingual-section">
+                <div class="zh-text"><strong>公司类型:</strong> 独资企业</div>
+                <div class="en-text"><strong>Business Type:</strong> Sole Proprietorship</div>
+            </div>
+            
+            <div class="bilingual-section">
+                <div class="zh-text"><strong>营业范围:</strong> 食品供应、保健品销售、房屋店铺租赁、矿产贸易、家居产品销售</div>
+                <div class="en-text"><strong>Business Scope:</strong> Food products supply, supplements sales, property leasing, minerals trading, household products sales</div>
+            </div>
         </section>
 
         <!-- 拉钱蛋糕 -->
         <section class="cake-category">
             <h2 class="cake-title">拉钱蛋糕</h2>
+            <div class="cake-title-en">Money Pulling Cake</div>
             
             <div class="image-grid">
                 <div>
-                    <img src="https://ibb.co/j9bHRyFr" alt= "鲜花蛋糕礼盒，有钱花蛋糕，homemade cake" class="cake-image">
-                    <p class="image-label">Example 1</p>
+                    <img src="https://i.ibb.co/CpmW2bFH/Whats-App-Image-2025-12-18-at-21-27-19-cake-1.jpg" alt="鲜花蛋糕礼盒，有钱花蛋糕，homemade cake" class="cake-image">
+                    <p class="image-label">示例 1 | Example 1</p>
                 </div>
                 <div>
-                    <img src="https://ibb.co/SwMzDG5r" alt="创意，奇幻，童话造型蛋糕,homemade cake" class="cake-image">
-                    <p class="image-label">Example 2</p>
+                    <img src="https://i.ibb.co/d4VRsxjg/Whats-App-Image-2025-12-18-at-21-27-20-cake-3.jpg" alt="创意，奇幻，童话造型蛋糕,homemade cake" class="cake-image">
+                    <p class="image-label">示例 2 | Example 2</p>
                 </div>
                 <div>
-                    <img src="https://ibb.co/5CXcDX3" alt="发财，新年，喜庆，长辈造型蛋糕,homemade cake" class="cake-image">
-                    <p class="image-label">Example 3</p>
-                </div>
-                <div>
-                    <img src="https://via.placeholder.com/300x200/FFD700/000000?text=Money+Cake+4" alt="拉钱蛋糕示例 4" class="cake-image">
-                    <p class="image-label">Example 4</p>
+                    <img src="https://i.ibb.co/cRKT5K9/Whats-App-Image-2025-12-18-at-21-27-20-cake-4.jpg" alt="发财，新年，喜庆，长辈造型蛋糕,homemade cake" class="cake-image">
+                    <p class="image-label">示例 3 | Example 3</p>
                 </div>
             </div>
             
             <div class="cake-specs">
-                Cake size: 8 inches(20cm)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Price: RM228 - RM288
+                <div class="specs-zh">蛋糕尺寸: 8英寸(20厘米)        价格: RM228 - RM288</div>
+                <div class="specs-en">Cake size: 8 inches(20cm)        Price: RM228 - RM288</div>
             </div>
             
-            <p class="price-note">(上述资料为参考，蛋糕尺寸可定制，价格会随定制要求变动)</p>
+            <div class="price-note">
+                <div class="note-zh">(上述资料为参考，蛋糕尺寸可定制，价格会随定制要求变动)</div>
+                <div class="note-en">(Above specifications are for reference only. Cake size can be customized, price varies with requirements)</div>
+            </div>
             
-            <a href="https://wa.me/60165689026?text=Hi%20Special%20Design%20Cake!%20I'm%20interested%20in%20your%20拉钱蛋糕" class="whatsapp-link" target="_blank">
-                点击此处通过WhatsApp订购拉钱蛋糕
+            <a href="https://wa.me/60165689026?text=Hi%20Special%20Design%20Cake!%20I'm%20interested%20in%20your%20拉钱蛋糕/Money%20Cake" 
+               class="whatsapp-link" 
+               target="_blank">
+                点击订购拉钱蛋糕 | Order Money Cake
             </a>
-            <p class="link-instruction">欲购买蛋糕请点击此网址向卖家下单 (点击后会跳转到WhatsApp)</p>
+            <div class="link-instruction">
+                <div class="zh-text">欲购买蛋糕请点击此网址向卖家下单 (点击后会跳转到WhatsApp)</div>
+                <div class="en-text">Click to order via WhatsApp (will redirect to WhatsApp)</div>
+            </div>
         </section>
 
         <!-- JELLY CAKE -->
         <section class="cake-category">
-            <h2 class="cake-title">JELLY CAKE</h2>
+            <h2 class="cake-title">果冻蛋糕</h2>
+            <div class="cake-title-en">Jelly Cake</div>
             
             <div class="image-grid">
                 <div>
-                    <img src="https://ibb.co/zWSQ4k3Z" alt="Jelly Cake，多层彩虹色果冻蛋糕装饰有水果" class="cake-image">
-                    <p class="image-label">Example 1</p>
+                    <img src="https://i.ibb.co/FkBmDPQz/Whats-App-Image-2025-12-18-at-21-27-20-cake-2.jpg" alt="Jelly Cake，多层彩虹色果冻蛋糕装饰有水果" class="cake-image">
+                    <p class="image-label">示例 1 | Example 1</p>
                 </div>
             </div>
             
             <div class="cake-specs">
-                Cake size: Custom&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Price: Custom Quote
+                <div class="specs-zh">蛋糕尺寸: 可定制        价格: 根据定制报价</div>
+                <div class="specs-en">Cake size: Customizable        Price: Custom Quote</div>
             </div>
             
-            <p class="price-note">(Jelly Cake尺寸和价格根据定制要求确定)</p>
+            <div class="price-note">
+                <div class="note-zh">(果冻蛋糕尺寸和价格根据定制要求确定)</div>
+                <div class="note-en">(Jelly cake size and price determined based on customization requirements)</div>
+            </div>
             
-            <a href="https://wa.me/60106662025?text=Hi%20Special%20Design%20Cake!%20I'm%20interested%20in%20your%20Jelly%20Cake" class="whatsapp-link" target="_blank">
-                点击此处通过WhatsApp订购Jelly Cake
+            <a href="https://wa.me/60106662025?text=Hi%20Special%20Design%20Cake!%20I'm%20interested%20in%20your%20果冻蛋糕/Jelly%20Cake" 
+               class="whatsapp-link" 
+               target="_blank">
+                点击订购果冻蛋糕 | Order Jelly Cake
             </a>
-            <p class="link-instruction">欲购买蛋糕请点击此网址向卖家下单 (点击后会跳转到WhatsApp)</p>
+            <div class="link-instruction">
+                <div class="zh-text">欲购买蛋糕请点击此网址向卖家下单 (点击后会跳转到WhatsApp)</div>
+                <div class="en-text">Click to order via WhatsApp (will redirect to WhatsApp)</div>
+            </div>
         </section>
 
         <!-- 页脚 -->
         <footer class="social-footer">
-            <p>Facebook account: xxxxxx, Instagram account: xxxxxx</p>
-            <p>Contact Email: kverchong@hotmail.com | Business Registered: JPLUS BRL TRADE ENTERPRISE</p>
-            <p>© 2024 Special Design Cake. All rights reserved. | Malaysia Homemade Cakes</p>
+            <div class="footer-zh">📞 联系号码: 016-5689026 / 010-6662025</div>
+            <div class="footer-en">📞 Contact: 016-5689026 / 010-6662025</div>
+            
+            <div class="footer-zh">📧 电子邮箱: kverchong@hotmail.com</div>
+            <div class="footer-en">📧 Email: kverchong@hotmail.com</div>
+            
+            <div class="footer-zh">📱 Facebook账号: xxxxxx  Instagram账号: xxxxxx</div>
+            <div class="footer-en">📱 Facebook: xxxxxx  Instagram: xxxxxx</div>
+            
+            <div class="footer-zh">© 2024 Special Design Cake 版权所有 | 马来西亚私家蛋糕坊</div>
+            <div class="footer-en">© 2024 Special Design Cake All Rights Reserved | Malaysia Homemade Cake Studio</div>
         </footer>
     </div>
 
     <script>
-        // 简单确认网站加载
-        console.log("Special Design Cake website loaded!");
+        // 语言切换功能
+        function switchLanguage(lang) {
+            // 更新按钮状态
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // 这里可以扩展为完整的语言切换功能
+            // 目前显示的是双语，所以不需要隐藏内容
+            if(lang === 'en') {
+                // 可以添加英文优先显示的逻辑
+                console.log('Switched to English');
+            } else {
+                console.log('Switched to Chinese');
+            }
+        }
+        
+        // 页面加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Special Design Cake bilingual website loaded!');
+            
+            // WhatsApp链接点击跟踪
+            document.querySelectorAll('.whatsapp-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    console.log('WhatsApp order link clicked: ' + this.href);
+                });
+            });
+        });
     </script>
 </body>
 </html>
-
