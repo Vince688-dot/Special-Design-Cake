@@ -399,6 +399,8 @@
         .preview-item {
             position: relative;
             cursor: pointer;
+            border-radius: 8px;
+            overflow: hidden;
         }
         
         .preview-checkbox {
@@ -409,12 +411,12 @@
             width: 20px;
             height: 20px;
             cursor: pointer;
+            accent-color: #ffcc00;
         }
         
         .preview-item.selected {
             outline: 3px solid #ffcc00;
             outline-offset: -3px;
-            border-radius: 8px;
         }
         
         .preview-item.selected .preview-img {
@@ -566,7 +568,7 @@
                 Cake size: Custom&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Price: Custom Quote
             </div>
             <p class="price-note">(Jelly Cake尺寸和价格根据定制要求确定)</p>
-            <a href="https://wa.me/60106662025?text=Hi%20Special%20Design%20Cake!%20I'm%20interested%in%20your%20Jelly%20Cake" class="whatsapp-link" target="_blank">点击此处通过WhatsApp订购Jelly Cake</a>
+            <a href="https://wa.me/60106662025?text=Hi%20Special%20Design%20Cake!%20I'm%20interested%20in%20your%20Jelly%20Cake" class="whatsapp-link" target="_blank">点击此处通过WhatsApp订购Jelly Cake</a>
             <p class="link-instruction">欲购买蛋糕请点击此网址向卖家下单 (点击后会跳转到WhatsApp)</p>
         </section>
 
@@ -643,6 +645,8 @@
                     document.getElementById('adminOverlay').classList.remove('active');
                     switchMode('manager');
                     showMessage('登录成功');
+                    // 加载图片并更新预览
+                    loadCloudImages();
                 })
                 .catch((error) => {
                     alert('登录失败: ' + error.message);
@@ -709,8 +713,9 @@
                     
                     cakeImages[type].push({
                         url: downloadURL,
-                        name: fileName,
+                        name: file.name,
                         storageName: fileName.split('/')[1],
+                        fullPath: fileName,
                         isVideo: isVideo
                     });
                     
@@ -776,6 +781,7 @@
                         url: url,
                         name: item.name,
                         storageName: item.name,
+                        fullPath: `${type}/${item.name}`,
                         isVideo: item.name.includes('.mp4') || item.name.includes('.mov') || 
                                  item.name.includes('.avi') || item.name.includes('.webm')
                     };
@@ -811,6 +817,7 @@
                 
                 await Promise.all(deletePromises);
                 cakeImages[type] = [];
+                selectedFiles[type] = [];
                 updateImageGrid(type, `${type === 'moneyCake' ? 'money' : 'jelly'}-cake-grid`);
                 updatePreview(type);
                 showMessage(`成功删除 ${deletedCount} 个文件`);
@@ -848,18 +855,21 @@
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.className = 'preview-checkbox';
-                checkbox.onclick = (e) => {
+                checkbox.checked = selectedFiles[type].includes(index);
+                
+                checkbox.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    toggleSelection(type, index, checkbox.checked);
-                };
+                    toggleSelection(type, index, this.checked);
+                });
                 
                 // 点击预览图也触发选择
-                wrapper.onclick = () => {
-                    const isSelected = wrapper.classList.contains('selected');
-                    wrapper.classList.toggle('selected');
-                    checkbox.checked = !isSelected;
-                    toggleSelection(type, index, !isSelected);
-                };
+                wrapper.addEventListener('click', function(e) {
+                    if (e.target !== checkbox) {
+                        const isSelected = selectedFiles[type].includes(index);
+                        toggleSelection(type, index, !isSelected);
+                        checkbox.checked = !isSelected;
+                    }
+                });
                 
                 const previewElement = item.isVideo ? 
                     document.createElement('video') : 
@@ -871,32 +881,50 @@
                 if (item.isVideo) {
                     previewElement.controls = true;
                     previewElement.preload = 'metadata';
+                    previewElement.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                    });
                 }
                 
+                // 文件名显示
+                const fileName = item.name.length > 20 ? 
+                    item.name.substring(0, 17) + '...' : 
+                    item.name;
+                
                 const info = document.createElement('div');
-                info.textContent = `${index + 1}. ${item.name.split('_').pop()}`;
+                info.textContent = `${index + 1}. ${fileName}`;
                 info.style.fontSize = '10px';
                 info.style.color = 'rgba(255,255,255,0.7)';
                 info.style.overflow = 'hidden';
                 info.style.textOverflow = 'ellipsis';
                 info.style.whiteSpace = 'nowrap';
+                info.style.marginTop = '3px';
                 
                 wrapper.appendChild(checkbox);
                 wrapper.appendChild(previewElement);
                 wrapper.appendChild(info);
                 preview.appendChild(wrapper);
+                
+                // 如果之前已选中，添加选中样式
+                if (selectedFiles[type].includes(index)) {
+                    wrapper.classList.add('selected');
+                }
             });
             
             updateSelectedCount(type);
         }
         
         function toggleSelection(type, index, isSelected) {
+            const wrapper = document.querySelector(`#${type}Preview .preview-item[data-index="${index}"]`);
+            
             if (isSelected) {
                 if (!selectedFiles[type].includes(index)) {
                     selectedFiles[type].push(index);
                 }
+                if (wrapper) wrapper.classList.add('selected');
             } else {
                 selectedFiles[type] = selectedFiles[type].filter(i => i !== index);
+                if (wrapper) wrapper.classList.remove('selected');
             }
             
             const batchActions = document.getElementById(`${type}BatchActions`);
@@ -943,7 +971,7 @@
                 
                 for (const file of filesToDelete) {
                     try {
-                        const fileRef = storage.ref(`${type}/${file.storageName}`);
+                        const fileRef = storage.ref(file.fullPath);
                         await fileRef.delete();
                         deletedCount++;
                     } catch (error) {
