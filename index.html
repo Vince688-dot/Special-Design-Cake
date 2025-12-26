@@ -30,7 +30,7 @@
         
         body {
             font-family: Verdana, sans-serif;
-            background-color: cornsilk;
+            background-color: rgba(0, 0, 0, 0.4);
             color: #333;
             line-height: 1.6;
             position: relative;
@@ -42,7 +42,7 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background-image: url("https://i.ibb.co/v6vZBFMT/1.jpg");  <!-- 第57行：替换背景图URL -->
+            background-image: url("https://i.ibb.co/5XbP7Dpg/1-1.jpg");  
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -82,10 +82,6 @@
             color: black;
             margin-bottom: 15px;
             font-weight: bold;
-        }
-        
-        @media (max-width: 768px) {
-            .shop-name { font-size: 40px; }
         }
         
         .tagline {
@@ -367,7 +363,7 @@
             display: block;
         }
         
-        /* 视频控件样式 - 新增 */
+        /* 视频控件样式 */
         .cake-image[controls] {
             background: #000;
             cursor: pointer;
@@ -399,10 +395,44 @@
             object-fit: cover;
         }
         
-        @media (max-width: 768px) {
+        /* ========== 移动端优化 ========== */
+        /* 平板和手机 */
+        @media screen and (max-width: 768px) {
+            .shop-name { font-size: 40px; }
             .tagline { font-size: 28px; }
             .cake-title { font-size: 28px; }
             .admin-panel { width: 100%; right: -100%; }
+            
+            /* 背景优化 */
+            body::before {
+                background-attachment: scroll; /* 提升移动端性能 */
+                opacity: 0.4; /* 稍微调亮一点 */
+            }
+            
+            body::after {
+                background-color: rgba(255, 248, 225, 0.75); /* 加强遮罩 */
+            }
+            
+            .container {
+                padding: 15px; /* 减少容器内边距 */
+            }
+        }
+        
+        /* 小屏幕手机 */
+        @media screen and (max-width: 480px) {
+            /* 背景优化 */
+            body::before {
+                background-size: cover;
+                background-position: center top;
+            }
+            
+            body::after {
+                background-color: rgba(255, 248, 225, 0.8); /* 进一步加深遮罩 */
+            }
+            
+            .container {
+                padding: 10px;
+            }
         }
     </style>
     
@@ -463,9 +493,9 @@
             <p><strong>NO PENDAFTARAN:</strong> 202403243271 (PG0560944-P)</p>
             <p><strong>ALAMAT UTAMA PERNIAGAAN:</strong> B18-01 BLOCK B, TWIN RESIDENCES, JALAN PIPT, BUKIT TANDANG, 47170 PUCHONG, SELANGOR</p>
             <p><strong>BENTUK PERNIAGAAN:</strong> PEMILIKAN TUNGGAL</p>
-            <p><strong>TARKH MULA BERNIAGA:</strong> 20-08-2024</p>
-            <p><strong>TARKH PENDAFTARAN:</strong> 12-09-2024</p>
-            <p><strong>TARKH LUPUT PENDAFTARAN:</strong> 11-09-2027</p>
+            <p><strong>TARIKH MULA BERNIAGA:</strong> 20-08-2024</p>
+            <p><strong>TARIKH PENDAFTARAN:</strong> 12-09-2024</p>
+            <p><strong>TARIKH LUPUT PENDAFTARAN:</strong> 11-09-2027</p>
             <p><strong>STATUS:</strong> AKTIF</p>
             <h3>JENIS PERNIAGAAN</h3>
             <p>SUPPLY SALES OF FOOD PRODUCTS, SALES OF SUPPLEMENTS, HOUSE AND SHOP LEASING AND TRADING OF MINERALS (SAND, COAL, OIL AND GAS), SALES OF HOUSEHOLD PRODUCT</p>
@@ -494,7 +524,7 @@
         </section>
 
         <footer class="social-footer">
-            <p>Facebook account: @jpluscake, Instagram account: @jpluscake</p>  <!-- 第316行：替换社交媒体 -->
+            <p>Facebook account: @jpluscake, Instagram account: @jpluscake</p>
             <p>Contact Email: kverchong@hotmail.com | Business Registered: JPLUS BRL TRADE ENTERPRISE</p>
             <p>© 2024 Special Design Cake. All rights reserved. | Malaysia Homemade Cakes</p>
         </footer>
@@ -502,7 +532,7 @@
 
     <script>
         // ==================== 需要填入的资料 ====================
-        // 1. Firebase配置（第335行开始）
+        // Firebase配置
         const firebaseConfig = {
            apiKey: "AIzaSyCKGQHHtXrc0hqCEJksY5o0ONbTEkon_Ow",
            authDomain: "special-design-cake-46d39.firebaseapp.com",
@@ -512,12 +542,6 @@
            appId: "1:897622953612:web:7e1ebf48bb3ce5c19df5a9",
            measurementId: "G-YW5MY3FQBY"
         };
-        
-        // 3. 背景图片URL（第57行）
-        // background-image: url('YOUR_BACKGROUND_IMAGE_URL');
-        
-        // 4. 社交媒体账号（第316行）
-        // Facebook account: YOUR_FACEBOOK, Instagram account: YOUR_INSTAGRAM
         
         // ==================== 初始化 ====================
         firebase.initializeApp(firebaseConfig);
@@ -602,19 +626,16 @@
             const files = Array.from(input.files);
             const preview = document.getElementById(`${type}Preview`);
             
-            // 检查每个文件是否在本地符合要求
             for (const file of files) {
                 const isImage = file.type.startsWith('image/');
                 const isVideo = file.type.startsWith('video/');
                 const maxSize = isImage ? 20 * 1024 * 1024 : 120 * 1024 * 1024;
                 
-                // 文件类型检查
                 if (!isImage && !isVideo) {
                     alert(`文件 "${file.name}" 不是图片或视频`);
                     continue;
                 }
                 
-                // 文件大小检查
                 if (file.size > maxSize) {
                     const fileType = isImage ? '图片' : '视频';
                     const maxMB = maxSize / (1024 * 1024);
@@ -622,17 +643,15 @@
                     continue;
                 }
                 
-                // 视频时长预检查（前端辅助验证）
                 if (isVideo) {
                     try {
                         const isValid = await checkVideoDuration(file);
                         if (!isValid) continue;
                     } catch {
-                        // 如果无法读取视频元数据，继续上传，由后端规则处理
+                        // 如果无法读取视频元数据，继续上传
                     }
                 }
                 
-                // 上传文件
                 const fileId = Date.now() + '_' + Math.random().toString(36).substr(2, 9);
                 const fileName = `${type}/${fileId}_${file.name}`;
                 const storageRef = storage.ref(fileName);
@@ -641,7 +660,6 @@
                     const snapshot = await storageRef.put(file);
                     const downloadURL = await snapshot.ref.getDownloadURL();
                     
-                    // 创建预览
                     const previewElement = document.createElement(isVideo ? 'video' : 'img');
                     previewElement.src = downloadURL;
                     previewElement.className = 'preview-img';
@@ -651,7 +669,6 @@
                     }
                     preview.appendChild(previewElement);
                     
-                    // 添加到缓存
                     cakeImages[type].push({
                         url: downloadURL,
                         name: fileName,
@@ -672,7 +689,6 @@
             input.value = '';
         }
         
-        // 视频时长检查函数（前端辅助功能）
         function checkVideoDuration(file) {
             return new Promise((resolve) => {
                 const video = document.createElement('video');
@@ -680,7 +696,6 @@
                 
                 video.onloadedmetadata = () => {
                     window.URL.revokeObjectURL(video.src);
-                    // 检查视频时长是否超过65秒（含缓冲）
                     const isWithinLimit = video.duration <= 65;
                     if (!isWithinLimit) {
                         alert(`视频 "${file.name}" 时长约 ${Math.round(video.duration)} 秒，可能超过1分钟限制`);
@@ -689,7 +704,6 @@
                 };
                 
                 video.onerror = () => {
-                    // 如果无法读取元数据，交由后端规则处理
                     resolve(true);
                 };
                 
@@ -791,7 +805,6 @@
             setTimeout(() => msg.classList.remove('active'), 3000);
         }
         
-        // 密码输入支持回车
         document.getElementById('passwordInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') login();
         });
