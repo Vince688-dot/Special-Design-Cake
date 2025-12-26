@@ -395,39 +395,72 @@
             object-fit: cover;
         }
         
-        /* ========== 移动端优化 ========== */
-        /* 平板和手机 */
+        /* 多选功能样式 */
+        .preview-item {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .preview-checkbox {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            z-index: 10;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .preview-item.selected {
+            outline: 3px solid #ffcc00;
+            outline-offset: -3px;
+            border-radius: 8px;
+        }
+        
+        .preview-item.selected .preview-img {
+            opacity: 0.7;
+        }
+        
+        .batch-actions {
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px 0;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        /* 移动端优化 */
         @media screen and (max-width: 768px) {
             .shop-name { font-size: 40px; }
             .tagline { font-size: 28px; }
             .cake-title { font-size: 28px; }
             .admin-panel { width: 100%; right: -100%; }
             
-            /* 背景优化 */
             body::before {
-                background-attachment: scroll; /* 提升移动端性能 */
-                opacity: 0.4; /* 稍微调亮一点 */
+                background-attachment: scroll;
+                opacity: 0.4;
             }
             
             body::after {
-                background-color: rgba(255, 248, 225, 0.75); /* 加强遮罩 */
+                background-color: rgba(255, 248, 225, 0.75);
             }
             
             .container {
-                padding: 15px; /* 减少容器内边距 */
+                padding: 15px;
             }
         }
         
-        /* 小屏幕手机 */
         @media screen and (max-width: 480px) {
-            /* 背景优化 */
             body::before {
                 background-size: cover;
                 background-position: center top;
             }
             
             body::after {
-                background-color: rgba(255, 248, 225, 0.8); /* 进一步加深遮罩 */
+                background-color: rgba(255, 248, 225, 0.8);
             }
             
             .container {
@@ -461,6 +494,13 @@
             <h3>拉钱蛋糕图片上传</h3>
             <input type="file" id="moneyCakeUpload" class="file-input" accept="image/*,video/*" multiple onchange="uploadFiles('moneyCake')">
             <button onclick="document.getElementById('moneyCakeUpload').click()" class="upload-btn">选择文件（图片/视频）</button>
+            
+            <div class="batch-actions" id="moneyCakeBatchActions">
+                <button onclick="deleteSelected('moneyCake')" class="action-btn delete-btn">删除选中文件</button>
+                <button onclick="clearSelection('moneyCake')" class="action-btn" style="background: #666; color: white;">取消选择</button>
+                <span id="moneyCakeSelectedCount" style="color: white; margin-left: 10px;">已选择 0 个文件</span>
+            </div>
+            
             <div class="upload-preview" id="moneyCakePreview"></div>
             <button onclick="deleteImages('moneyCake')" class="action-btn delete-btn">删除所有</button>
         </div>
@@ -469,6 +509,13 @@
             <h3>Jelly Cake 图片上传</h3>
             <input type="file" id="jellyCakeUpload" class="file-input" accept="image/*,video/*" multiple onchange="uploadFiles('jellyCake')">
             <button onclick="document.getElementById('jellyCakeUpload').click()" class="upload-btn">选择文件（图片/视频）</button>
+            
+            <div class="batch-actions" id="jellyCakeBatchActions">
+                <button onclick="deleteSelected('jellyCake')" class="action-btn delete-btn">删除选中文件</button>
+                <button onclick="clearSelection('jellyCake')" class="action-btn" style="background: #666; color: white;">取消选择</button>
+                <span id="jellyCakeSelectedCount" style="color: white; margin-left: 10px;">已选择 0 个文件</span>
+            </div>
+            
             <div class="upload-preview" id="jellyCakePreview"></div>
             <button onclick="deleteImages('jellyCake')" class="action-btn delete-btn">删除所有</button>
         </div>
@@ -519,7 +566,7 @@
                 Cake size: Custom&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Price: Custom Quote
             </div>
             <p class="price-note">(Jelly Cake尺寸和价格根据定制要求确定)</p>
-            <a href="https://wa.me/60106662025?text=Hi%20Special%20Design%20Cake!%20I'm%20interested%20in%20your%20Jelly%20Cake" class="whatsapp-link" target="_blank">点击此处通过WhatsApp订购Jelly Cake</a>
+            <a href="https://wa.me/60106662025?text=Hi%20Special%20Design%20Cake!%20I'm%20interested%in%20your%20Jelly%20Cake" class="whatsapp-link" target="_blank">点击此处通过WhatsApp订购Jelly Cake</a>
             <p class="link-instruction">欲购买蛋糕请点击此网址向卖家下单 (点击后会跳转到WhatsApp)</p>
         </section>
 
@@ -551,6 +598,7 @@
         
         let currentUser = null;
         let cakeImages = { moneyCake: [], jellyCake: [] };
+        let selectedFiles = { moneyCake: [], jellyCake: [] };
         
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('guestBtn').classList.add('active');
@@ -624,7 +672,6 @@
             if (!input.files.length) return;
             
             const files = Array.from(input.files);
-            const preview = document.getElementById(`${type}Preview`);
             
             for (const file of files) {
                 const isImage = file.type.startsWith('image/');
@@ -660,18 +707,10 @@
                     const snapshot = await storageRef.put(file);
                     const downloadURL = await snapshot.ref.getDownloadURL();
                     
-                    const previewElement = document.createElement(isVideo ? 'video' : 'img');
-                    previewElement.src = downloadURL;
-                    previewElement.className = 'preview-img';
-                    if (isVideo) {
-                        previewElement.controls = true;
-                        previewElement.preload = 'metadata';
-                    }
-                    preview.appendChild(previewElement);
-                    
                     cakeImages[type].push({
                         url: downloadURL,
                         name: fileName,
+                        storageName: fileName.split('/')[1],
                         isVideo: isVideo
                     });
                     
@@ -682,8 +721,9 @@
             }
             
             if (files.length > 0) {
-                showMessage(`已处理 ${files.length} 个文件`);
+                showMessage(`已上传 ${files.length} 个文件`);
                 updateImageGrid(type, `${type === 'moneyCake' ? 'money' : 'jelly'}-cake-grid`);
+                updatePreview(type);
             }
             
             input.value = '';
@@ -718,6 +758,8 @@
                 await loadImageType('jellyCake');
                 updateImageGrid('moneyCake', 'money-cake-grid');
                 updateImageGrid('jellyCake', 'jelly-cake-grid');
+                updatePreview('moneyCake');
+                updatePreview('jellyCake');
                 showMessage('图片加载完成');
             } catch (error) {
                 console.error('加载失败:', error);
@@ -733,6 +775,7 @@
                     return {
                         url: url,
                         name: item.name,
+                        storageName: item.name,
                         isVideo: item.name.includes('.mp4') || item.name.includes('.mov') || 
                                  item.name.includes('.avi') || item.name.includes('.webm')
                     };
@@ -747,17 +790,178 @@
             if (!confirm(`确定删除所有${type === 'moneyCake' ? '拉钱蛋糕' : 'Jelly Cake'}文件吗？`)) return;
             
             try {
+                showMessage('正在删除...');
                 const listRef = storage.ref(type);
                 const result = await listRef.listAll();
-                const deletePromises = result.items.map(item => item.delete());
-                await Promise.all(deletePromises);
                 
+                if (result.items.length === 0) {
+                    showMessage('没有找到要删除的文件');
+                    return;
+                }
+                
+                let deletedCount = 0;
+                const deletePromises = result.items.map(async (item) => {
+                    try {
+                        await item.delete();
+                        deletedCount++;
+                    } catch (error) {
+                        console.error(`删除失败 ${item.name}:`, error);
+                    }
+                });
+                
+                await Promise.all(deletePromises);
                 cakeImages[type] = [];
-                document.getElementById(`${type}Preview`).innerHTML = '';
                 updateImageGrid(type, `${type === 'moneyCake' ? 'money' : 'jelly'}-cake-grid`);
-                showMessage('删除成功');
+                updatePreview(type);
+                showMessage(`成功删除 ${deletedCount} 个文件`);
+                
             } catch (error) {
                 console.error('删除失败:', error);
+                showMessage(`删除失败: ${error.message}`);
+            }
+        }
+        
+        // ==================== 多选删除功能 ====================
+        function updatePreview(type) {
+            const preview = document.getElementById(`${type}Preview`);
+            const batchActions = document.getElementById(`${type}BatchActions`);
+            
+            preview.innerHTML = '';
+            
+            if (cakeImages[type].length === 0) {
+                const emptyMsg = document.createElement('div');
+                emptyMsg.textContent = '暂无文件';
+                emptyMsg.style.color = 'rgba(255,255,255,0.5)';
+                emptyMsg.style.padding = '10px';
+                emptyMsg.style.textAlign = 'center';
+                preview.appendChild(emptyMsg);
+                batchActions.style.display = 'none';
+                return;
+            }
+            
+            cakeImages[type].forEach((item, index) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'preview-item';
+                wrapper.dataset.index = index;
+                
+                // 添加勾选框
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'preview-checkbox';
+                checkbox.onclick = (e) => {
+                    e.stopPropagation();
+                    toggleSelection(type, index, checkbox.checked);
+                };
+                
+                // 点击预览图也触发选择
+                wrapper.onclick = () => {
+                    const isSelected = wrapper.classList.contains('selected');
+                    wrapper.classList.toggle('selected');
+                    checkbox.checked = !isSelected;
+                    toggleSelection(type, index, !isSelected);
+                };
+                
+                const previewElement = item.isVideo ? 
+                    document.createElement('video') : 
+                    document.createElement('img');
+                
+                previewElement.src = item.url;
+                previewElement.className = 'preview-img';
+                
+                if (item.isVideo) {
+                    previewElement.controls = true;
+                    previewElement.preload = 'metadata';
+                }
+                
+                const info = document.createElement('div');
+                info.textContent = `${index + 1}. ${item.name.split('_').pop()}`;
+                info.style.fontSize = '10px';
+                info.style.color = 'rgba(255,255,255,0.7)';
+                info.style.overflow = 'hidden';
+                info.style.textOverflow = 'ellipsis';
+                info.style.whiteSpace = 'nowrap';
+                
+                wrapper.appendChild(checkbox);
+                wrapper.appendChild(previewElement);
+                wrapper.appendChild(info);
+                preview.appendChild(wrapper);
+            });
+            
+            updateSelectedCount(type);
+        }
+        
+        function toggleSelection(type, index, isSelected) {
+            if (isSelected) {
+                if (!selectedFiles[type].includes(index)) {
+                    selectedFiles[type].push(index);
+                }
+            } else {
+                selectedFiles[type] = selectedFiles[type].filter(i => i !== index);
+            }
+            
+            const batchActions = document.getElementById(`${type}BatchActions`);
+            if (selectedFiles[type].length > 0) {
+                batchActions.style.display = 'flex';
+            } else {
+                batchActions.style.display = 'none';
+            }
+            
+            updateSelectedCount(type);
+        }
+        
+        function updateSelectedCount(type) {
+            const countElement = document.getElementById(`${type}SelectedCount`);
+            countElement.textContent = `已选择 ${selectedFiles[type].length} 个文件`;
+        }
+        
+        function clearSelection(type) {
+            selectedFiles[type] = [];
+            const items = document.querySelectorAll(`#${type}Preview .preview-item`);
+            items.forEach(item => {
+                item.classList.remove('selected');
+                const checkbox = item.querySelector('.preview-checkbox');
+                if (checkbox) checkbox.checked = false;
+            });
+            
+            const batchActions = document.getElementById(`${type}BatchActions`);
+            batchActions.style.display = 'none';
+            updateSelectedCount(type);
+        }
+        
+        async function deleteSelected(type) {
+            if (selectedFiles[type].length === 0) {
+                showMessage('请先选择要删除的文件');
+                return;
+            }
+            
+            if (!confirm(`确定删除选中的 ${selectedFiles[type].length} 个文件吗？`)) return;
+            
+            try {
+                showMessage('正在删除选中文件...');
+                const filesToDelete = selectedFiles[type].map(index => cakeImages[type][index]);
+                let deletedCount = 0;
+                
+                for (const file of filesToDelete) {
+                    try {
+                        const fileRef = storage.ref(`${type}/${file.storageName}`);
+                        await fileRef.delete();
+                        deletedCount++;
+                    } catch (error) {
+                        console.error(`删除失败 ${file.name}:`, error);
+                    }
+                }
+                
+                // 更新本地数据
+                cakeImages[type] = cakeImages[type].filter((_, index) => !selectedFiles[type].includes(index));
+                selectedFiles[type] = [];
+                
+                updateImageGrid(type, `${type === 'moneyCake' ? 'money' : 'jelly'}-cake-grid`);
+                updatePreview(type);
+                showMessage(`成功删除 ${deletedCount} 个文件`);
+                
+            } catch (error) {
+                console.error('删除失败:', error);
+                showMessage(`删除失败: ${error.message}`);
             }
         }
         
@@ -811,4 +1015,3 @@
     </script>
 </body>
 </html>
-
